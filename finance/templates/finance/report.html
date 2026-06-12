@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Finances Report - Finance Tracker{% endblock %}
+
+{% block content %}
+<div class="row mt-4 position-relative">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-bold fs-4 mb-0" >Generate Report</h3>
+            <a href="{% url 'export_csv' %}"
+                class="btn btn-success d-flex align-items-center gap-2 px-3 py-2 fw-medium rounded-3"
+                >
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+                    class="bi bi-file-earmark-excel" viewBox="0 0 16 16">
+                    <path
+                        d="M5.884 6.68a.5.5 0 1 0-.768.64L7.349 10l-2.233 2.68a.5.5 0 0 0 .768.64L8 10.781l2.116 2.54a.5.5 0 0 0 .768-.641L8.651 10l2.233-2.68a.5.5 0 0 0-.768-.64L8 9.219l-2.116-2.54z" />
+                    <path
+                        d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
+                </svg>
+                Export Format (Excel)
+            </a>
+        </div>
+
+        <div class="card card shadow-sm p-4">
+            <h4 class="mb-3 border-bottom pb-2">Transaction History</h4>
+            <div class="table-responsive mt-3">
+                <table class="table table-bordered table-striped text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Date</th>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Amount</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for t in transactions %}
+                        <tr>
+                            <td>{{ t.date|date:"M d, Y" }}</td>
+                            <td>{{ t.title }}</td>
+                            <td>{{ t.category }}</td>
+                            <td
+                                class="{% if t.transaction_type == 'Income' %}text-success fw-bold{% else %}text-danger fw-bold{% endif %}">
+                                {% if t.transaction_type == 'Income' %}+{% else %}-{% endif %}${{ t.amount }}
+                            </td>
+                            <td>{{ t.transaction_type }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-muted py-4">No transactions recorded yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}

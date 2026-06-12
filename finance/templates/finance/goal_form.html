@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Goal - Finance Tracker{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-4">
+    <div class="col-md-6">
+        <div class="card card shadow-sm p-4">
+            <h3 class="text-center mb-1"><span style="color: #212529">Add New Goal</span></h3>
+            <p class="text-center text-muted mb-4"><small>Set a saving target to stay motivated.</small></p>
+
+            <form method="POST">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="mb-3">
+                    <label for="{{ field.id_for_label }}" class="form-label text-muted"><small>{{ field.label }}</small></label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <div class="form-text">{{ field.help_text }}</div>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary" style="background-color: #6c63ff; border:none;">Save Goal</button>
+                    <a href="{% url 'dashboard' %}" class="btn btn-light" >Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

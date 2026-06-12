@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Transactions - Finance Tracker{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="fw-bold fs-4">Transaction List</h3>
+    <a href="{% url 'report' %}" class="btn btn-primary" >Generate Report</a>
+</div>
+
+<div class="card card shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0 align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th class="text-center py-3 border-0">Date</th>
+                        <th class="text-center py-3 border-0">Title</th>
+                        <th class="text-center py-3 border-0">Amount</th>
+                        <th class="text-center py-3 border-0">Type</th>
+                        <th class="text-center py-3 border-0">Category</th>
+                        <th class="text-center py-3 border-0">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in transactions %}
+                    <tr>
+                        <td class="text-center py-3 text-muted border-bottom">{{ transaction.date|date:"F j, Y" }}</td>
+                        <td class="text-center py-3 text-muted border-bottom">{{ transaction.title }}</td>
+                        <td class="text-center py-3 text-muted border-bottom">${{ transaction.amount }}</td>
+                        <td class="text-center py-3 text-muted border-bottom">{{ transaction.transaction_type }}</td>
+                        <td class="text-center py-3 text-muted border-bottom">{{ transaction.category }}</td>
+                        <td class="text-center py-3 border-bottom">
+                            <a href="{% url 'edit_transaction' transaction.id %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                            <a href="{% url 'delete_transaction' transaction.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center py-4 text-muted">No transactions found. <a href="{% url 'add_transaction' %}">Add one</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
